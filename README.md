@@ -54,8 +54,3 @@ Week 1 focuses on generating realistic transaction data (including fraud syndica
 ### Validation
 - Open the Neo4j Browser at []http://localhost:7474(http://localhost:7474) (Credentials: `neo4j` / `password`).
 - Run `MATCH (n) RETURN n LIMIT 200` to visualize the live, interconnected financial graph.
-
-=======
-FinGraph is an advanced FinTech and Anti-Money Laundering (AML) project designed to detect complex fraud and money-laundering networks in real time.
-# Fine_graph
->>>>>>> 02abc456f6533be7aa4600d6fb30bfa6be19ed07
