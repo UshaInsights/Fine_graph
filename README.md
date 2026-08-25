@@ -434,4 +434,166 @@ OK
 - **Latency benchmark**
 - **Week 2 test verification**
 
+Week 3 – Advanced Graph Analytics & AML Investigation Dashboard
+Overview
 
+In Week 3, FinGraph was extended with Neo4j Graph Data Science (GDS) and a Streamlit AML Investigation Dashboard. The existing Week 1 and Week 2 graph model and risk-scoring logic were preserved.
+
+The transaction-node model:
+
+(:Account)-[:SENDS]->(:Transaction)-[:TRANSFERRED_TO]->(:Account)
+
+is projected into a direct Account-to-Account in-memory graph for GDS analysis.
+
+Technology Used
+Neo4j 5.12.0
+Neo4j Graph Data Science (GDS) 2.6.9
+Python
+Neo4j Python Driver
+Streamlit
+Pyvis
+Pandas
+Docker
+GDS Analytics
+
+The new gds_analytics/ module implements:
+
+Graph Projection
+Creates the in-memory graph finGraph_transfers.
+Converts transaction-node paths into direct Account-to-Account relationships.
+Uses transaction amount as the relationship weight.
+
+PageRank
+
+Identifies accounts that are important within the transaction network.
+Results are persisted as:
+pagerank_score
+
+Weakly Connected Components (WCC)
+
+Identifies connected groups of accounts.
+Results are persisted as:
+wcc_component
+
+Louvain Community Detection
+
+Identifies communities or clusters of closely connected accounts.
+Results are persisted as:
+louvain_community
+Existing Risk Metrics Preserved
+
+Week 3 does not replace or modify the existing Week 2 AML risk engine.
+
+The following Week 2 properties remain unchanged:
+
+risk_score
+risk_level
+
+GDS metrics are stored separately on Account nodes.
+
+Streamlit AML Investigation Dashboard
+
+A read-only Streamlit dashboard was added under:
+
+Fingraph/dashboard/
+
+The dashboard provides:
+
+Total account and transaction KPIs
+High/Critical risk account counts
+Account search and inspection
+Owner and bank information
+Week 2 risk score and risk level
+GDS PageRank, WCC and Louvain results
+Interactive financial network visualization
+1-hop and 2-hop network exploration
+Risk-level filtering
+Louvain community filtering
+Transaction ledger
+Suspicious transaction identification
+Louvain community summary
+
+The dashboard is read-only and does not modify Neo4j data or perform account freeze actions.
+
+Week 3 Project Structure
+Fingraph/
+├── docker/
+│   └── docker-compose.yml
+│
+├── gds_analytics/
+│   ├── __init__.py
+│   ├── gds_runner.py
+│   └── test_gds_pipeline.py
+│
+└── dashboard/
+    ├── app.py
+    └── requirements.txt
+Running Week 3 GDS Analytics
+
+Make sure Neo4j, Kafka and Zookeeper are running:
+
+cd Fingraph\docker
+docker compose up -d
+
+Run the GDS verification tests:
+
+python Fingraph\gds_analytics\test_gds_pipeline.py
+
+Run the GDS analytics pipeline:
+
+python Fingraph\gds_analytics\gds_runner.py
+Running the Dashboard
+
+Install dashboard dependencies:
+
+pip install -r Fingraph\dashboard\requirements.txt
+
+Start the dashboard:
+
+streamlit run Fingraph\dashboard\app.py
+
+Then open:
+
+http://localhost:8501
+Week 3 Verification
+
+The GDS pipeline was verified successfully with:
+
+Neo4j Version : 5.12.0
+GDS Version   : 2.6.9
+
+The following operations were successfully tested:
+
+GDS connectivity
+GDS version retrieval
+finGraph_transfers projection
+PageRank execution
+WCC execution
+Louvain execution
+pagerank_score persistence
+wcc_component persistence
+louvain_community persistence
+In-memory graph cleanup
+
+The automated test suite completed successfully:
+
+
+
+The Streamlit dashboard was also verified successfully and is available at:
+
+http://localhost:8501
+Week 3 Outcome
+
+Week 3 transforms FinGraph from a rule-based transaction pattern detection system into an advanced graph analytics and AML investigation platform by combining:
+
+Existing Transaction Graph
+          ↓
+Account-to-Account GDS Projection
+          ↓
+PageRank + WCC + Louvain
+          ↓
+GDS Results on Account Nodes
+          ↓
+Streamlit AML Investigation Dashboard
+
+This implementation keeps the existing Week 1 and Week 2 logic intact while adding graph-based analytics and investigation capabilities.
