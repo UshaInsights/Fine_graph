@@ -434,8 +434,8 @@ OK
 - **Latency benchmark**
 - **Week 2 test verification**
 
-Week 3 – Advanced Graph Analytics & AML Investigation Dashboard
-Overview
+## Week 3 – Advanced Graph Analytics & AML Investigation Dashboard
+*Overview*
 
 In Week 3, FinGraph was extended with Neo4j Graph Data Science (GDS) and a Streamlit AML Investigation Dashboard. The existing Week 1 and Week 2 graph model and risk-scoring logic were preserved.
 
